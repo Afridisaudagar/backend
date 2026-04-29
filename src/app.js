@@ -15,8 +15,12 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow all origins for now to fix deployment issues
+      callback(null, true);
+    },
     credentials: true,
+    optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
 
