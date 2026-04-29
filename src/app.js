@@ -28,6 +28,10 @@ app.use("/api/leaderboard", leaderboardRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/wellness", wellnessRouter);
 app.use("/api/ai", aiRouter);
+
+app.get("/", (req, res) => {
+  res.json({ message: "AI Education Backend is running!" });
+});
      
 
 export default app;
