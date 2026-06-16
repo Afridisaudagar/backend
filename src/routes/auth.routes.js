@@ -2,7 +2,7 @@ import express from "express";
 const authRouter = express.Router();
 
 import { registerUser, loginUser, getProfile } from "../controllers/auth.controller.js";
-import { IdentiyUser } from "../middleware/auth.middleware.js";
+import { IdentityUser } from "../middleware/auth.middleware.js";
 
 // registration api
 // API is /api/auth/register
@@ -13,6 +13,6 @@ authRouter.post("/register", registerUser);
 authRouter.post("/login", loginUser);
 
 // profile api
-authRouter.get("/me", IdentiyUser, getProfile);
+authRouter.get("/me", IdentityUser, getProfile);
 
 export default authRouter;

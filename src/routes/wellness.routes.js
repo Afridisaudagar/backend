@@ -2,14 +2,14 @@ import express from "express";
 const router = express.Router();
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Mistral } from "@mistralai/mistralai";
-import { IdentiyUser } from "../middleware/auth.middleware.js";
+import { IdentityUser } from "../middleware/auth.middleware.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const mistralClient = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
 
-router.post("/advice", IdentiyUser, async (req, res) => {
+router.post("/advice", IdentityUser, async (req, res) => {
   try {
     const { mood, sleep, mindset, goal } = req.body;
 

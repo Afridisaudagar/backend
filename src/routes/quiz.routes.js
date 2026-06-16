@@ -7,7 +7,7 @@ dotenv.config();
 import { Quiz } from "../models/quiz.model.js";
 import { Score } from "../models/score.model.js";
 import { User } from "../models/user.model.js";
-import { IdentiyUser } from "../middleware/auth.middleware.js";
+import { IdentityUser } from "../middleware/auth.middleware.js";
 
 import { Mistral } from "@mistralai/mistralai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -43,7 +43,7 @@ const extractJson = (text) => {
 
 
 // AI GENERATE QUIZ
-router.post("/generate", IdentiyUser, async (req, res) => {
+router.post("/generate", IdentityUser, async (req, res) => {
   try {
     const { prompt, skills, timeLimit, isDynamic = true } = req.body;
     
@@ -110,7 +110,7 @@ router.post("/generate", IdentiyUser, async (req, res) => {
 });
 
 // Get user's own scores
-router.get("/my-scores", IdentiyUser, async (req, res) => {
+router.get("/my-scores", IdentityUser, async (req, res) => {
   try {
     const scores = await Score.find({ user: req.user.id }).sort({ createdAt: -1 });
     res.json(scores);
@@ -120,7 +120,7 @@ router.get("/my-scores", IdentiyUser, async (req, res) => {
 });
 
 // Submit score
-router.post("/submit", IdentiyUser, async (req, res) => {
+router.post("/submit", IdentityUser, async (req, res) => {
   try {
     const { score, quizId, questions } = req.body;
     const newScore = await Score.create({
@@ -136,7 +136,7 @@ router.post("/submit", IdentiyUser, async (req, res) => {
 });
 
 // ADMIN CREATE CUSTOM QUIZ
-router.post("/create", IdentiyUser, async (req, res) => {
+router.post("/create", IdentityUser, async (req, res) => {
   try {
     const { subject, questions } = req.body;
     const quiz = await Quiz.create({ subject, questions });
@@ -147,7 +147,7 @@ router.post("/create", IdentiyUser, async (req, res) => {
 });
 
 // GET ALL QUIZZES
-router.get("/all", IdentiyUser, async (req, res) => {
+router.get("/all", IdentityUser, async (req, res) => {
   try {
     const quizzes = await Quiz.find().sort({ createdAt: -1 });
     res.json(quizzes);
@@ -157,7 +157,7 @@ router.get("/all", IdentiyUser, async (req, res) => {
 });
 
 // DELETE QUIZ
-router.delete("/:id", IdentiyUser, async (req, res) => {
+router.delete("/:id", IdentityUser, async (req, res) => {
   try {
     await Quiz.findByIdAndDelete(req.params.id);
     res.json({ message: "Quiz Deleted Successfully" });
@@ -167,7 +167,7 @@ router.delete("/:id", IdentiyUser, async (req, res) => {
 });
 
 // STUDENT FETCH ALL QUIZZES
-router.get("/student/all", IdentiyUser, async (req, res) => {
+router.get("/student/all", IdentityUser, async (req, res) => {
   try {
     const quizzes = await Quiz.find().sort({ createdAt: -1 });
     res.json(quizzes);
@@ -176,7 +176,7 @@ router.get("/student/all", IdentiyUser, async (req, res) => {
   }
 });
 
-router.get("/:id", IdentiyUser, async (req, res) => {
+router.get("/:id", IdentityUser, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ message: "Quiz not found" });
@@ -226,7 +226,7 @@ router.get("/:id", IdentiyUser, async (req, res) => {
 });
 
 // BOSS BATTLE GENERATION
-router.post("/boss-battle/generate", IdentiyUser, async (req, res) => {
+router.post("/boss-battle/generate", IdentityUser, async (req, res) => {
   try {
     const topics = ["Full Stack Development", "System Architecture", "Advanced Algorithms", "Cybersecurity Essentials", "AI & Machine Learning"];
     const randomTopic = topics[Math.floor(Math.random() * topics.length)];
@@ -272,7 +272,7 @@ router.post("/boss-battle/generate", IdentiyUser, async (req, res) => {
 });
 
 // CLAIM BOSS BATTLE BADGE
-router.post("/boss-battle/claim", IdentiyUser, async (req, res) => {
+router.post("/boss-battle/claim", IdentityUser, async (req, res) => {
   try {
     const { score } = req.body;
     if (score < 70) return res.status(400).json({ message: "Score too low." });
@@ -291,7 +291,7 @@ router.post("/boss-battle/claim", IdentiyUser, async (req, res) => {
 });
 
 // GET USER BADGES
-router.get("/user/badges", IdentiyUser, async (req, res) => {
+router.get("/user/badges", IdentityUser, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         res.json({ badges: user.badges || [], streak: user.streak || 0 });
@@ -301,7 +301,7 @@ router.get("/user/badges", IdentiyUser, async (req, res) => {
 });
 
 // GENERATE ROADMAP
-router.post("/roadmap/generate", IdentiyUser, async (req, res) => {
+router.post("/roadmap/generate", IdentityUser, async (req, res) => {
     try {
         const { goal } = req.body;
         const prompt = `
